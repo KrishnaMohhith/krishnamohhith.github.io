@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Simple Scatter</title>
+</head>
+<body>
+    <div>
+        <svg id="chart1" width="500" height="500"></svg>
+            <script>
+                d3.json("GlobalTemperatures.json")
+                    .then(function(data) {
+                        const svgScatter = d3.select("#chart1");
+                        const marginScatter = { top: 20, right: 20, bottom: 40, left: 40 };
+                        const widthScatter = +svgScatter.attr("width") - marginScatter.left - marginScatter.right;
+                        const heightScatter = +svgScatter.attr("height") - marginScatter.top - marginScatter.bottom;
+
+                        const xScatter = d3.scaleLinear()
+                            .domain([18500000, d3.max(data, d => d.time)])
+                            .range([0, widthScatter]);
+
+                        const yScatter = d3.scaleLinear()
+                            .domain([d3.min(data.map(d => d.LAT)),15])
+                            .range([heightScatter, 0]);
+
+                        const rScatter = d3.scaleLinear()
+                            .domain([d3.min(data, d => d.LATU), d3.max(data, d => d.LATU)])
+                            .range([0,3]);
+
+                        const backgroundimg = svgScatter.append("image")
+                            .attr("xlink:href","lab31.png")
+                            .attr("width", 500)
+                            .attr("height", 500)
+                            .attr("opacity", 0.25)
+
+                        const gScatter = svgScatter.append("g")
+                            .attr("transform", "translate(" + marginScatter.left + "," + marginScatter.top + ")");
+
+                        gScatter.selectAll("circle")
+                            .data(data)
+                            .enter().append("circle")
+                            .attr("cx", d => xScatter(d.time))
+                            .attr("cy", d => yScatter(d.LAT))
+                            .attr("r", d => rScatter(d.LATU)) // Circle radius
+                            .attr("fill", "blue");
+
+                        gScatter.append("g")
+                            .attr("class", "x-axis")
+                            .attr("transform", "translate(0," + heightScatter + ")")
+                            .call(d3.axisBottom(xScatter));
+
+                        gScatter.append("g")
+                            .attr("class", "y-axis")
+                            .call(d3.axisLeft(yScatter));
+                    })
+                    .catch(function(error) {
+                        console.error("Error loading JSON file:", error);
+                    });
+            </script>
+    </div>
+
+    <div>
+        <svg id="chart2" width="500" height="500"></svg>
+            <script>
+                d3.json("GlobalTemperatures.json")
+                    .then(function(data) {
+                        const svgScatter = d3.select("#chart2");
+                        const marginScatter = { top: 20, right: 20, bottom: 40, left: 40 };
+                        const widthScatter = +svgScatter.attr("width") - marginScatter.left - marginScatter.right;
+                        const heightScatter = +svgScatter.attr("height") - marginScatter.top - marginScatter.bottom;
+
+                        const cxScatter = d3.scaleLinear()
+                            .domain([0, d3.max(data, d => d.LAT)])
+                            .range([0, widthScatter]);
+
+                        const cyScatter = d3.scaleLinear()
+                            .domain([d3.min(data.map(d => d.LOAT)),20])
+                            .range([heightScatter, 0]);
+
+                        const rxScatter = d3.scaleLinear()
+                            .domain([d3.min(data, d => d.LATU), d3.max(data, d => d.LATU)])
+                            .range([0,3]);
+
+                        const ryScatter = d3.scaleLinear()
+                            .domain([d3.min(data, d => d.LOATU), d3.max(data, d => d.LOATU)])
+                            .range([0,3])
+
+                        const backgroundimg = svgScatter.append("image")
+                            .attr("xlink:href","lab31.png")
+                            .attr("width", 500)
+                            .attr("height", 500)
+                            .attr("opacity", 0.25)
+
+                        const gScatter = svgScatter.append("g")
+                            .attr("transform", "translate(" + marginScatter.left + "," + marginScatter.top + ")");
+                        
+                        gScatter.selectAll("ellipse")
+                            .data(data)
+                            .enter().append("ellipse")
+                            .attr("cx", d => cxScatter(d.LAT))
+                            .attr("cy", d => cyScatter(d.LOAT))
+                            .attr("rx", d => rxScatter(d.LATU))
+                            .attr("ry", d=> ryScatter(d.LOATU)) // Circle radius
+                            .attr("fill", "blue");
+
+                        gScatter.append("g")
+                            .attr("class", "x-axis")
+                            .attr("transform", "translate(0," + heightScatter + ")")
+                            .call(d3.axisBottom(cxScatter));
+
+                        gScatter.append("g")
+                            .attr("class", "y-axis")
+                            .call(d3.axisLeft(cyScatter));
+                        
+                    })
+                    .catch(function(error) {
+                        console.error("Error loading JSON file:", error);
+                    });
+            </script>
+    </div>
+
+    <div>
+        <svg id="chart3" width="500" height="500">
+            <script>
+                d3.json("GlobalTemperatures.json")
+                    .then(function(data) {
+                        const svgScatter = d3.select("#chart3");
+                        const marginScatter = { top: 20, right: 20, bottom: 40, left: 40 };
+                        const widthScatter = +svgScatter.attr("width") - marginScatter.left - marginScatter.right;
+                        const heightScatter = +svgScatter.attr("height") - marginScatter.top - marginScatter.bottom;
+
+                        const xScatter = d3.scaleLinear()
+                            .domain([18500000, d3.max(data, d => d.time)])
+                            .range([0, widthScatter]);
+
+                        const yScatter = d3.scaleLinear()
+                            .domain([d3.min(data.map(d => d.LAT)),20])
+                            .range([heightScatter, 0]);
+
+                        const y1Scatter = d3.scaleLinear()
+                            .domain([d3.min(data.map(d => d.LAT)),20])
+                            .range([heightScatter, 0]);
+
+                        const rScatter = d3.scaleLinear()
+                            .domain([d3.min(data, d => d.LATU), d3.max(data, d => d.LATU)])
+                            .range([0,3]);
+
+                        const backgroundimg = svgScatter.append("image")
+                            .attr("xlink:href","lab31.png")
+                            .attr("width", 500)
+                            .attr("height", 500)
+                            .attr("opacity", 0.25)
+
+                        const gScatter = svgScatter.append("g")
+                            .attr("transform", "translate(" + marginScatter.left + "," + marginScatter.top + ")");
+                        
+                        const gCircle1 = gScatter.append("g")
+                            .attr("transform", "translate(0,0)");
+                        
+                            gCircle1.selectAll("circle")
+                            .data(data)
+                            .enter().append("circle")
+                            .attr("cx", d => xScatter(d.time))
+                            .attr("cy", d => yScatter(d.LAT))
+                            .attr("r", d => rScatter(d.LATU)) // Circle radius
+                            .attr("fill", "blue");
+                        
+                        const gCircle2 = gScatter.append("g")
+                            .attr("transform", "translate(0,0)");
+
+                        gCircle2.selectAll("circle")
+                            .data(data)
+                            .enter().append("circle")
+                            .attr("cx", d => xScatter(d.time))
+                            .attr("cy", d => y1Scatter(d.LOAT))
+                            .attr("r", d => rScatter(d.LATU)) // Circle radius
+                            .attr("fill", "red");
+
+                        gCircle1.append("g")
+                            .attr("class", "x-axis")
+                            .attr("transform", "translate(0," + heightScatter + ")")
+                            .call(d3.axisBottom(xScatter));
+
+                        gCircle2.append("g")
+                            .attr("class", "x-axis")
+                            .attr("transform", "translate(0," + heightScatter + ")")
+                            .call(d3.axisBottom(xScatter));
+
+                        gCircle1.append("g")
+                            .attr("class", "y-axis")
+                            .call(d3.axisLeft(yScatter));
+
+                        gCircle2.append("g")
+                            .attr("class", "y-axis")
+                            .call(d3.axisLeft(y1Scatter));
+                    })
+                    .catch(function(error) {
+                        console.error("Error loading JSON file:", error);
+                    });
+            </script>
+        </svg>
+    </div>
+
+</body>
+</html>
