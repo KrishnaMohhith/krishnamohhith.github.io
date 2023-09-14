@@ -143,8 +143,12 @@
                             .domain([d3.min(data.map(d => d.LAT)),20])
                             .range([heightScatter, 0]);
 
-                        const rScatter = d3.scaleLinear()
+                        const r1Scatter = d3.scaleLinear()
                             .domain([d3.min(data, d => d.LATU), d3.max(data, d => d.LATU)])
+                            .range([0,3]);
+
+                        const r2Scatter = d3.scaleLinear()
+                            .domain([d3.min(data, d => d.LOATU), d3.max(data, d => d.LOATU)])
                             .range([0,3]);
 
                         const backgroundimg = svgScatter.append("image")
@@ -164,7 +168,7 @@
                             .enter().append("circle")
                             .attr("cx", d => xScatter(d.time))
                             .attr("cy", d => yScatter(d.LAT))
-                            .attr("r", d => rScatter(d.LATU)) // Circle radius
+                            .attr("r", d => r1Scatter(d.LATU)) // Circle radius
                             .attr("fill", "blue");
                         
                         const gCircle2 = gScatter.append("g")
@@ -175,7 +179,7 @@
                             .enter().append("circle")
                             .attr("cx", d => xScatter(d.time))
                             .attr("cy", d => y1Scatter(d.LOAT))
-                            .attr("r", d => rScatter(d.LATU)) // Circle radius
+                            .attr("r", d => r2Scatter(d.LOATU)) // Circle radius
                             .attr("fill", "red");
 
                         gCircle1.append("g")
